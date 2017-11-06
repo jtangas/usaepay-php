@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:ns1="urn:usaepay"
+                   xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                   xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+                   SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+    <SOAP-ENV:Body>
+        <ns1:runQuickCredit>
+            <Token xsi:type="ns1:ueSecurityToken">
+                <ClientIP xsi:type="xsd:string">{{ ip }}</ClientIP>
+                <PinHash xsi:type="ns1:ueHash">
+                    <HashValue xsi:type="xsd:string">{{ pin }}</HashValue>
+                    <Seed xsi:type="xsd:string">{{ seed }}</Seed>
+                    <Type xsi:type="xsd:string">sha1</Type>
+                </PinHash>
+                <SourceKey xsi:type="xsd:string">{{ key }}</SourceKey>
+            </Token>
+            <RefNum xsi:type="xsd:integer">{{ refNum }}</RefNum>
+            <Details xsi:type="ns1:TransactionDetail">
+                <Amount xsi:type="xsd:double">{{ amount }}</Amount>
+                <Description xsi:type="xsd:string">{{ description }}</Description>
+                <Discount xsi:type="xsd:double">{{ discount }}</Discount>
+                <Invoice xsi:type="xsd:string">{{ invoice }}</Invoice>
+                <NonTax xsi:type="xsd:boolean">{{ nonTaxable }}</NonTax>
+                <OrderID xsi:type="xsd:string">{{ orderId }}</OrderID>
+                <PONum xsi:type="xsd:string">{{ poNum }}</PONum>
+                <Shipping xsi:type="xsd:double">{{ shipping }}</Shipping>
+                <Subtotal xsi:type="xsd:double">{{ subTotal }}</Subtotal>
+                <Tax xsi:type="xsd:double">{{ tax }}</Tax>
+                <Tip xsi:type="xsd:double">{{ tip }}</Tip>
+                </Details>
+            <AuthOnly xsi:type="xsd:boolean">false</AuthOnly>
+        </ns1:runQuickCredit>
+    </SOAP-ENV:Body>
+</SOAP-ENV:Envelope>
