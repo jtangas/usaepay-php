@@ -18,26 +18,38 @@ class GatewayTest extends TestCase
 {
     public function testCreateTransaction()
     {
-        $key = 'abc123';
+        $key = '_jLu4KI5kS2E6u4jl2x72dqG5pZkVUK3';
         $pin = '1234';
-        $useSandBox = false;
+        $useSandBox = true;
         $testMode = false;
-        $client = Mockery::mock(Client::class);
-        $client->shouldReceive('post')
-            ->andReturn('');
+        if (!$useSandBox) {
+            $client = Mockery::mock(Client::class);
+            $client->shouldReceive('post')
+                ->andReturn('');
+        } else {
+            $client = new Client();
+        }
 
         $gateWay = new Gateway($key, $pin, $useSandBox, $testMode, $client);
 
         $validCCTrans = [
-            'ip' => '111.111.111.111',
-            'amount' => '100.00',
-            'invoice' => uniqid(),
-            'description' => 'Test Order'
+            'ip'            => '111.111.111.111',
+            'amount'        => '100.00',
+            'invoice'       => uniqid(),
+            'description'   => 'Test Order',
+            'card'          => '4111111111111111',
+            'exp'           => '0120',
+            'cardholder'    => 'Justin Tangas',
+            'billstreet'    => '517 4th Ave',
+            'billstreet2'   => 'suite 401',
+            'zip'           => '92101',
+            'cvv2'          => '111'
         ];
 
         $trans = $gateWay->createTransaction(Gateway::CREDIT_TRANS, $validCCTrans);
 
         $result = $trans->process();
+        var_dump($result->getBody()->getContents());
 
         $this->assertInstanceOf(CreditCardEcom::class, $trans);
 

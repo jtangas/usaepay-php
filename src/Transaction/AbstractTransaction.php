@@ -23,7 +23,7 @@ abstract class AbstractTransaction implements TransactionInterface
     const SANDBOX_GATEWAY = 'https://sandbox.usaepay.com/gate';
 
     /** commands */
-    const CMD_SALE              = 'sale';
+    const CMD_SALE              = 'cc:sale';
     const CMD_VOID              = 'void';
     const CMD_CREDIT            = 'credit';
     const CMD_PRE_AUTH          = 'preauth';
@@ -351,6 +351,8 @@ abstract class AbstractTransaction implements TransactionInterface
             return $carry;
         }, $carry);
 
+
+
         foreach ($properties as $property => $value) {
             $normProp = str_replace("_", "", strtolower($property));
             if (array_key_exists($normProp, $propList)) {
@@ -441,7 +443,7 @@ abstract class AbstractTransaction implements TransactionInterface
 
             $hashType = (function_exists('sha1')) ? self::SHA1_HASH : self::MD5_HASH;
 
-            $hash = sprintf($hashType, $seed, implode(":", $preHash));
+            $hash = sprintf($hashType, $seed, sha1(implode(":", $preHash)));
             $data[self::HASH] = $hash;
         }
 
@@ -454,9 +456,13 @@ abstract class AbstractTransaction implements TransactionInterface
             $url = self::SANDBOX_GATEWAY;
         }
 
-        /** @TODO do guzzle stuff here */
+        var_dump($data);
+        var_dump($url);
 
+        /** @TODO do guzzle stuff here */
         $result = $this->client->post($url);
+
+        var_dump($result->getBody()->getContents());die();
 
         return $result;
     }
